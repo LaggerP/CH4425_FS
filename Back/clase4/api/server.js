@@ -13,28 +13,30 @@ app.use(bodyParser.json())
 //async
 app.get('/', async (req, res) => {
     const nombre = req.query.nombre
+    const response = await fetch(url)
+    const json = await response.json()
     if (nombre) {
-        const response = await fetch(url)
-        const json = await response.json()
         const user = json.result.find(e => e.nombre === nombre)
         return res.json({ result: user })
+    }else{
+        return res.json({ result: json })
     }
-    return res.json({ result: json })
+    
 })
 
 //no async
-app.get('/', (req, res) => {
-    const nombre = req.query.nombre
-    fetch(url)
-    .then(res => res.json())
-    .then(json => {
-        if (nombre) {
-            const user = json.result.find(e => e.nombre === nombre)
-            return res.json({ result: user })
-        } else {
-            return res.json({ result: json })
-        }
-    })
-})
+// app.get('/', (req, res) => {
+//     const nombre = req.query.nombre
+//     fetch(url)
+//         .then(res => res.json())
+//         .then(json => {
+//             if (nombre) {
+//                 const user = json.result.find(e => e.nombre === nombre)
+//                 return res.json({ result: user })
+//             } else {
+//                 return res.json({ result: json })
+//             }
+//         })
+// })
 
 app.listen(3000)
