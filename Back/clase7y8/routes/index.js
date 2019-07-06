@@ -4,7 +4,9 @@ const api = express.Router()
 const userController = require ('../Controller/userController.js')
 
 api.get('/', userController.holaMundo)
+api.get('/users/', userController.findAllUser)
 api.get('/users/:id', userController.findUserById)
+api.get('/users/:username', userController.findUserByUsername)
 api.get('/likes/:id', userController.findLikeById)
 
 api.post('/likes', userController.createLike)

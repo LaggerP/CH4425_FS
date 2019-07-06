@@ -6,30 +6,39 @@ const holaMundo = (req, res) => {
     res.json({ response: 'Hola mundo' })
 }
 
+const findAllUser = async (req, res) => {
+    const user = await UserModel.findAll()
+    res.json({ result: user })
+}
+
 const findUserById = async (req, res) => {
     const id = req.params.id
-    const user = await UserModel.findOne({ where: {id}})
+    const user = await UserModel.findOne({ where: { id } })
+    res.json({ result: user })
+}
+
+const findUserByUsername = async (req, res) => {
+    const username = req.params.username
+    const user = await UserModel.findOne({ where: { username } })
     res.json({ result: user })
 }
 
 const findLikeById = async (req, res) => {
     const id_user = req.params.id
-    const like = await LikesModel.findAll({ where: {id_user}})
+    const like = await LikesModel.findAll({ where: { id_user } })
     res.json({ result: like })
 }
 
 const createLike = async (req, res) => {
-    
     const { url, id_user } = req.body
-    const newLike = await LikesModel.create({url, id_user})
+    const newLike = await LikesModel.create({ url, id_user })
     console.log("Like creado", newLike.id)
     res.json(newLike)
 }
 
 const login = async (req, res) => {
-    console.log(req.body)
-    const {mail, password} = req.body
-    let user = await UserModel.findOne({ where: { mail}})
+    const { mail, password } = req.body
+    let user = await UserModel.findOne({ where: { mail } })
     if (user !== null) {
         user = user.dataValues
         if (user.password === password) {
@@ -51,7 +60,9 @@ const register = async (req, res) => {
 
 module.exports = {
     holaMundo,
+    findAllUser,
     findUserById,
+    findUserByUsername,
     findLikeById,
     createLike,
     login,
